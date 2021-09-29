@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.item;
 
 import jpabook.jpashop.domain.Category;
+import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,28 @@ public abstract class Item {
     //    @JoinTable(name="cateogry_item") 다대다에서 joinTable name만 잡아주지 않는 이유 알겠지?
     @ManyToMany(mappedBy="items")
     private List<Category> categories = new ArrayList<Category>();
+
+
+    // == 비즈니스로직 == //
+
+    /**
+     * stock 증가
+     * @param quantity
+     */
+    public void addStock(int quantity) {
+        this.stockQuantity += quantity;
+    }
+
+    /**
+     * stock 감소
+     */
+    public void removeStock(int quantity) {
+        int restStock = this.stockQuantity - quantity;
+        if (restStock < 0) {
+            throw new NotEnoughStockException("need more stock");
+        }
+        this.stockQuantity = restStock;
+    }
 
 
 }
