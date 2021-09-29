@@ -1,0 +1,20 @@
+spring:
+#   사실아래것들 다 없어도 됨. 아무 설정이 없다면 스프링부트가 메모리모드로 돌려버리기 때문.
+#  datasource:
+#    url: jdbc:h2:mem:test # 테스트에선 실제 DB 대신 메모리에서 동작하도록 하겠다. 자세한건 h2 공식문서 가면 잘 나와있음.
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create # create-drop 은 마지막에 싹 자원정리까지 해주는 옵션.
+#    properties:
+#      hibernate:
+#        #        show_sql: true
+#        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug # ??? ??
+    org.hibernate.type: trace # ?? sql ? ?? ???? ????? ???.
