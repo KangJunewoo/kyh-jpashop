@@ -1,11 +1,13 @@
 package jpabook.jpashop.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.persistence.Embeddable;
 
 @Embeddable // 내장 값타입. 생성 시점에 모든 값이 fix되어야 함.
 @Getter
+@AllArgsConstructor
 public class Address {
     private String city;
     private String street;

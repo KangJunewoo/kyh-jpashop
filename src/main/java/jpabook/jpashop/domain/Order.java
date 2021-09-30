@@ -1,6 +1,8 @@
 package jpabook.jpashop.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -14,6 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Table(name = "orders") // order는 예약어이기 때문에 orders로 많이들 함.
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
     @Id @GeneratedValue
     @Column(name="order_id")
@@ -52,7 +55,7 @@ public class Order {
 
     }
 
-    // == 생성 메서드 == : 복잡한 도메인일 경우 생성도 도메인에서 하는 경우가 있음.
+    // == 생성 메서드 == : 복잡한 도메인일 경우 생성도 도메인에서 따로 메소드로 하는 경우가 있음. new OrderItem() 대신에!
     public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
         Order order = new Order();
         order.setMember(member);
