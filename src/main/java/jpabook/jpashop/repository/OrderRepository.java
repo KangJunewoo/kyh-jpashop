@@ -24,7 +24,7 @@ public class OrderRepository {
         return em.find(Order.class, id);
     }
 
-    public List<Order> findAll(OrderSearch orderSearch) {
+    public List<Order> findAllByString(OrderSearch orderSearch) {
         // 검색조건값들이 다 있다는 가정 하에서는 다음과 같이 정적쿼리로 나타낼 수 있음.
         // 하지만 값들이 띄엄띄엄 있다면 동적쿼리가 들어가야 되는데..
 //        return em.createQuery("select o from Order o join o.member m" +
