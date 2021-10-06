@@ -69,7 +69,7 @@ public class ItemController {
     @PostMapping("items/{itemId}/edit")
     public String updateItem(@ModelAttribute("form") BookForm form) {
 
-        itemService.updateItem(form.getId(), form.getName(), form.getPrice());
+        itemService.updateItem(form.getId(), form.getName(), form.getPrice(), form.getStockQuantity());
         // setter 사용 권장하지 않음. merge 방식도 권장하지 않음.
         // 변경 감지를 사용하자!!
 //        Book book = new Book();
