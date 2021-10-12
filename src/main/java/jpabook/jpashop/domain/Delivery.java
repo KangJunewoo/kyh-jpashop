@@ -17,7 +17,7 @@ public class Delivery {
     @Column(name = "delivery_id")
     private Long id;
 
-    @JsonIgnore
+    @JsonIgnore // 양방향이 걸리는 곳은 싹 다 jsonignore 걸어줘야함.
     @OneToOne(fetch=LAZY, mappedBy = "delivery") // 연관관계의 주인 잘 따져야함. 보통 오더로 딜리버리를 조회하니 딜리버리를 연관관계의 주인으로 하자.
     private Order order;
 

@@ -23,6 +23,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
+
 
 	// 부트에 젤 잘맞는 궁합 설정되어 있지 않은 라이브러리는 버전을 명시해줘야 함.
 	// 아래 라이브러리의 경우, 로그에 찍히는 sql의 물음표를 알려줌.
