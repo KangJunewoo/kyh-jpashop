@@ -56,6 +56,7 @@ public class Order {
     }
 
     // == 생성 메서드 == : 복잡한 도메인일 경우 생성도 도메인에서 따로 메소드로 하는 경우가 있음. new OrderItem() 대신에!
+    // ...일 경우엔 여러 params 넘길 수 있음.
     public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
         Order order = new Order();
         order.setMember(member);
