@@ -1,18 +1,13 @@
 package jpabook.jpashop.api;
 
-import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
-import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
-import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
-import lombok.Data;
+import jpabook.jpashop.repository.OrderSimpleQueryDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,10 +47,10 @@ public class OrderSimpleApiController {
     }
 
     @GetMapping("/api/v2/simple-orders")
-    public List<SimpleOrderDto> ordersV2() {
+    public List<OrderSimpleQueryDto> ordersV2() {
         List<Order> orders = orderRepository.findAllByString(new OrderSearch());
-        List<SimpleOrderDto> result = orders.stream()
-                .map(o -> new SimpleOrderDto(o))
+        List<OrderSimpleQueryDto> result = orders.stream()
+                .map(o -> new OrderSimpleQueryDto(o))
                 .collect(Collectors.toList());
 
         return result;
@@ -63,32 +58,36 @@ public class OrderSimpleApiController {
 
 
     @GetMapping("/api/v3/simple-orders")
-    public List<SimpleOrderDto> ordersV3() {
+    public List<OrderSimpleQueryDto> ordersV3() {
         List<Order> orders = orderRepository.findAllWithMemberDelivery();
-        List<SimpleOrderDto> result = orders.stream()
-                .map(o -> new SimpleOrderDto(o))
+        List<OrderSimpleQueryDto> result = orders.stream()
+                .map(o -> new OrderSimpleQueryDto(o))
                 .collect(Collectors.toList());
 
         return result;
     }
 
+    /*
+    V4는 직접 쿼리를 짜서 dto를 조회하는 방식.
+    조금 번거롭긴 해도 select *이 아닌 내가 원하는 칼럼만 가져올 수 있다는 장점이 있다.
+    v3과 v4는 좀 우열을 가리기 어렵다.
+    v3 : 재사용성 굳.
+    v4 : 재사용성 똥. 조금 더 성능최적화 면에서 나음. api 스펙이 바뀌면 고쳐야함.
+    생각보다 성능에 별로 차이는 없다.
+    쿼리에서 성능먹는 부분은 from 이후부터이다.
+
+    보통 인덱스 잘못잡혔거나 하는곳에서 성능을 갉아먹지
+
+    v4는 엄청난 트래픽을 받는 api에만 고민해볼 가치가 있겠다.
+     */
+//    @GetMapping("/api/v4/simple-orders")
+//    public List<OrderSimpleQueryDto> ordersV4() {
+//        return orderRepository.findOrderDtos(); // 엔티티가 아닌 dto 직접 조회
+//    }
 
 
-    @Data
-    static class SimpleOrderDto {
-        private Long orderId;
-        private String name;
-        private LocalDateTime orderDate;
-        private OrderStatus orderStatus;
-        private Address address;
 
-        public SimpleOrderDto(Order order) {
-            orderId = order.getId();
-            name = order.getMember().getName(); // LAZY 초기화
-            orderDate = order.getOrderDate();
-            orderStatus = order.getStatus();
-            address = order.getDelivery().getAddress(); // LAZY 초기화
 
-        }
-    }
+
+
 }
