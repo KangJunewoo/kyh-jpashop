@@ -104,4 +104,16 @@ public class OrderRepository {
         return query.getResultList();
 
     }
+
+
+    // 페치조인. 사실상 join fetch. fetch라는 명령은 sql에 없다.
+    // 페치조인은 jpa 책을 통해 완벽하게 이해해야 함. 실무 성능문제 90%는 여기에 있다.
+    public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class
+
+        ).getResultList();
+    }
 }
