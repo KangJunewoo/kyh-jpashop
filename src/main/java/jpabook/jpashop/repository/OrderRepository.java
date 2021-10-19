@@ -115,6 +115,17 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        // 오더아이템은 자동으로 땡겨와짐.
+        return em.createQuery(
+                        "select o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
     public List<OrderSimpleQueryDto> findOrderDtos() {
         return em.createQuery(
                 "select new jpabook.jpashop.repository.OrderSimpleQueryDto(o.id, m.name, o.orderDate, o.status, d.address)" +
@@ -122,5 +133,21 @@ public class OrderRepository {
                         " join o.member m" +
                         " join o.delivery d", OrderSimpleQueryDto.class
         ).getResultList();
+    }
+
+    public List<Order> findAllWithItem() {
+        // jpa disinct : db distinct + 스마트한 자동 엔티티 중복제거
+        // jpa join fetch : db inner join + select문에 칼럼 자동 추가
+        // 실무에서는 주로 이것보단 QueryDSL 많이 쓴다고 함.
+        // 일대다 페치조인 단점 : 페이징 불가. 일대다에서 다가 기준이 되기 때문. 이 경우 그냥 메모리단에서 처리를 하는데 이는 메모리를 너무 많이 잡아먹을 수 있음.
+        // 컬렉션 페치조인(여기선 orderItems)은 하나만 사용할 수 있음. 데이터가 부정확하게 조회될 수 있기 때문.
+        return em.createQuery(
+                        "select distinct o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d" +
+                                " join fetch o.orderItems oi" +
+                                " join fetch oi.item i", Order.class)
+                .getResultList();
+
     }
 }

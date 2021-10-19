@@ -12,6 +12,7 @@ spring:
       hibernate:
 #        show_sql: true
         format_sql: true
+        default_batch_fetch_size: 100 # 꿀팁. 이것보다 더 개선하려면 레디스나 정규화.. 인데 웬만하면 이걸로 해결됨.
 
 logging:
   level:
